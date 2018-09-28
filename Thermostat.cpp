@@ -125,6 +125,7 @@ void Thermostat::report() {unsigned long currentMillis = millis();
     previousMillis = currentMillis; 
     logger->updateState("POWER", "all", power);
     logger->updateState("energySaver", "all", energySaver);
+      logger->updateState("maxAirTemp", "all", maxAirTemp);
     for (int i = 0; i < sizeof(roomPriority)/sizeof(roomPriority[0]); i++) {
       const char* location = roomPriority[i]->getLocation();
       logger->updateState("maxAirTemp", location, roomPriority[i]->getMaxAirTemp());
