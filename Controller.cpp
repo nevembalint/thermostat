@@ -39,6 +39,7 @@ void Controller::callback(char* topic, byte* payload, unsigned int length)
         EEPROM.get(thermostat->maxAirTempMemLoc, tempInEEPROM);
         logger->writeLog("Temperature in EEPROM is: ", tempInEEPROM, 3);
         thermostat->setMaxAirTemp(temperature);
+        logger->updateState("maxAirTemp", "all", temperature);
         if (temperature != tempInEEPROM)
         {
             EEPROM.put(thermostat->maxAirTempMemLoc, temperature);
