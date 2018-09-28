@@ -15,7 +15,7 @@ void Measure::measureDHT() {
     previousMillis = currentMillis; 
     float humidityBuff = dht->readHumidity();
     float airTempBuff = dht->readTemperature();
-    logger->writeLog("DHT read on pin: ", pin, 2);
+    logger->writeLog("DHT read on pin: ", pin, 3);
     logger->writeLog("Air temp: ", airTemp, 2);
     logger->writeLog("Humidity: ", humidity, 2);
     //logger->updateState("airTemp", location, airTemp);
