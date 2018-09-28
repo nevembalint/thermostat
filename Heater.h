@@ -12,7 +12,7 @@ class Heater
     int sensorPin;
     DallasTemperature sensor;
     const uint8_t* deviceAddress;
-    float offsetFloor = 4.0;
+    float offsetFloor = 4.0f;
     float temp;
     float maxFloor = 35.0f;
     int i=0;

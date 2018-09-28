@@ -4,7 +4,7 @@ Thermostat::Thermostat(Log* f_logger)
 {
   logger = f_logger;
   hallSensor = new Measure(13, logger, "hall");
-  livingroom = new Room("livingroom", 0, 12, hallSensor, 24.0f, livingroomFloorAddress, logger);
+  livingroom = new Room("livingroom", 5, 12, hallSensor, 24.0f, livingroomFloorAddress, logger);
   hall = new Room("hall", 4, 12, hallSensor, 24.0f, hallFloorAddress, logger);
   roomPriority[0] = hall;
   roomPriority[1] = livingroom;
@@ -40,6 +40,10 @@ Log* Thermostat::getLogger() {
 
 void Thermostat::handleHeating() {
   if (power) {
+  for (int i = 0; i < sizeof(roomPriority)/sizeof(roomPriority[0]); i++) {
+    roomPriority[i]->readTemp();
+    roomPriority[i]->getHeater()->readTemp();
+  }
     for (int i = 0; i < sizeof(roomPriority)/sizeof(roomPriority[0]); i++) {
       Room* room = roomPriority[i];
       room->readTemp();
@@ -113,6 +117,7 @@ void Thermostat::startUp() {
   EEPROM.get(logLevelMemLoc, logLevelInEEPROM);
     logger->setlogLevel(logLevelInEEPROM);
     logger->writeLog("LogLevel option read from EEPROM and set: ", logLevelInEEPROM, 2);
+
 }
 
 void Thermostat::report() {unsigned long currentMillis = millis();
