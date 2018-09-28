@@ -12,7 +12,7 @@ Heater::Heater(const char* f_location, int f_relayPin, int f_sensorPin, const ui
   OneWire oneWire(sensorPin);
   sensor = DallasTemperature(&oneWire);
   sensor.begin();
-  sensor.setResolution(deviceAddress, 10);
+  sensor.setResolution(deviceAddress, 12);
   logger = f_logger;
   location = f_location;
   pinMode(relayPin, OUTPUT);
