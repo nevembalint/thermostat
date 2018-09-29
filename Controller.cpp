@@ -71,8 +71,7 @@ void Controller::callback(char* topic, byte* payload, unsigned int length)
         }
         else
         {
-            logger->writeLog(
-                "Set EnergySaver option is the same as in EEPROM, no writing happened ", "", 3);
+            logger->writeLog("Set EnergySaver option is the same as in EEPROM, no writing happened ", "", 3);
         }
     }
     const char* powerTopic = "thermostat/set/POWER";
