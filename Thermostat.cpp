@@ -65,6 +65,7 @@ void Thermostat::handleHeating() {
     for (int i = 0; i < sizeof(roomPriority)/sizeof(roomPriority[0]); i++) {
       Room* room = roomPriority[i];
         room->heatOff();
+        room->handleHeating();
     }
   }
   report();
