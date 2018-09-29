@@ -42,8 +42,9 @@ float Heater::readTemp()
     }
     i++;*/
   
-    if (tempC == -127.00 || isnan(tempC) || tempC == -7040)
+    if (tempC == -127.00 || isnan(tempC) || tempC == -7040 || tempC == 85.00)
       {
+        logger->writeLog("Failed to read floor sensor in ", location, 2);
         return 100.0;
       }
     else
