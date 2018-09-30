@@ -20,6 +20,7 @@ class Heater
     long previousMillis = 0;
     long interval = 2000;
     bool onState = false;
+    int errors = 0;
   public:
     Heater();
     Heater(const char* f_location, int f_relayPin, int f_sensorPin, const uint8_t* f_deviceAddress, Log* f_logger);
