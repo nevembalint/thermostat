@@ -26,13 +26,11 @@ void Room::readTemp() {
 
 void Room::heatOn() {
   //logger->writeLog("Attempting to turn on heat in ", location, 3);
-  
-  if (!onState)
+  if (!isOn())
   {
-    onState = true;
     logger->writeLog("Room turned on: ", location, 1);
     logger->writeLog("Heating up in ", location, 3);
-    logger->updateState("heat", location, 1);
+    heater->turnOn();
     heatingUp = true;
   } else {
     //logger->writeLog("Heat is already on in ", location, 3);
@@ -41,26 +39,15 @@ void Room::heatOn() {
 
 void Room::heatOff() {
   //logger->writeLog("Attempting to turn off heat in ", location, 3);
-  
-  if (onState)
+  if (isOn())
   {
-    onState = false;
     logger->writeLog("Room turned off in ", location, 1);
     logger->writeLog("Not heating up in ", location, 3);
-    logger->updateState("heat", location, 0);
+    heater->turnOff();
     heatingUp = false;
   } else {
     //logger->writeLog("Heat is already off in ", location, 3);
   }
-}
-
-void Room::handleHeating() {
-  if (onState) {
-    heater->turnOn();
-  } else {
-    heater->turnOff();
-  }
-  heater->handleHeating();
 }
 
 Heater* Room::getHeater() {
@@ -105,8 +92,4 @@ void Room::setHeatingUp(bool value) {
 
 void Room::setMaxAirTemp(float f_temp) {
   maxAirTemp = f_temp;
-}
-
-bool Room::getOnState() {
-  return onState;
 }

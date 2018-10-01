@@ -26,21 +26,22 @@ float Heater::readTemp()
     previousMillis = currentMillis; 
     sensor.requestTemperatures();
     float tempC = sensor.getTempC(deviceAddress);
-    
-    /*float tempC = -127.0f;
-    if(relayPin==13) {
-      float temps[] = {34, 33.25, 33, 33, 33, 32.75, 32.5, 32.5, 32.25, 32.25, 32, 32, 31.75, 31.75, 31.75, 31.5, 31.5, 31.25, 31.25, 31, 31, 31, 30.75, 30.75, 30.75, 31, 31, 31, 31.25, 31.25, 31.5, 31.75, 31.75, 32, 32, 32.25, 32.5, 32.5, 32.75, 32.75, 33, 33, 33.25, 33.25, 33.5, 33.75, 33.75, 34, 34, 34.25, 34.25, 34.25, 34.5, 34.5, 34.75, 34.75, 35, 35, 35, 35, 34.75, 34.75, 34.5, 34.5, 34.25, 34.25, 34, 34, 33.75, 33.5, 33.5, 33.25, 33.25, 33, 33, 32.75, 32.5, 32.5, 32.25, 32.25, 32, 32, 31.75, 31.75, 31.75, 31.5, 31.5, 31.25, 31.25};
+    /*
+    float tempC = -127.0f;
+    if(relayPin==5) {
+      float temps[] = {27.0f, 27.0f, 27.0f, 27.0f, 31.0f, 34.0f, 35.0f, 34.0f, 30.0f, 30.0f, 30.0f, 33.0f};
       tempC = temps[i];
       if(i==sizeof(temps)/sizeof(temps[0]))
          i=0;
     }
-    else if (relayPin==12) {
-      float temps[] = {29.75, 30.5, 30.75, 30.75, 31, 31, 31.25, 31.25, 31.5, 31.75, 31.75, 32, 32, 32.25, 32.25, 32.5, 32.5, 32.75, 32.75, 33, 33, 33.25, 33.25, 33.25, 33.25, 33.25, 33.25, 33.25, 33.25, 33.25, 33, 33, 33, 33, 32.75, 32.75, 32.5, 32.5, 32.5, 32.25, 32.25, 32, 32, 32, 31.75, 31.75, 31.75, 31.5, 31.5, 31.5, 31.25, 31.25, 31, 31, 31, 30.75, 30.75, 30.75, 30.75, 30.75, 30.75, 30.75, 31, 31, 31.25, 31.25, 31.5, 31.5, 31.75, 31.75, 32, 32, 32.25, 32.25, 32.5, 32.5, 32.75, 33, 33, 33.25, 33.25, 33.5, 33.5, 33.75, 33.75, 34, 34, 34.25, 34.25};
+    else if (relayPin==4) {
+      float temps[] = {27.0f, 31.0f, 34.0f, 35.0f, 34.0f, 32.0f, 32.0f, 30.0f, 33.0f, 35.0f, 34.0f, 30.0f};
       tempC = temps[i];  
       if(i==sizeof(temps)/sizeof(temps[0]))
          i=0;
     }
-    i++;*/
+    i++;
+    */
   
     if (tempC == -127.00 || isnan(tempC) || tempC == -7040 || tempC == 85.00)
       {
@@ -64,7 +65,6 @@ float Heater::readTemp()
 
 void Heater::relayOn()
 {
-  logger->writeLog("Attempting to turn on relay in ", location, 3);
   if(!isOn())
   {
     digitalWrite(relayPin, LOW);
@@ -77,7 +77,6 @@ void Heater::relayOn()
 
 void Heater::relayOff()
 {
-  //logger->writeLog("Attempting to turn off relay in ", location, 3);
   if(isOn())
   {
     digitalWrite(relayPin, HIGH);
@@ -90,35 +89,21 @@ void Heater::relayOff()
 
 void Heater::turnOn()
 {
-  if(!onState) {
-  onState = true;
+  if(!isOn()) {
+    relayOn();
+    heatingUp = true;
   logger->writeLog("Heater turned on in ", location, 1);
   }
 }
 
 void Heater::turnOff()
 { 
-  if(onState) {
-  onState = false;
+  if(isOn()) {
+    relayOff();
+    heatingUp = false;
   logger->writeLog("Heater turned off in ", location, 1);
   }
 }
-
-void Heater::handleHeating() {
-  readTemp();
-  if (onState) {
-    if (temp < (maxFloor - offsetFloor)) {
-      if (!isOn())
-        relayOn();
-    } else if (temp >= maxFloor) {
-      if (isOn())
-        relayOff();
-    }
-  } else if(isOn()) {
-    relayOff();
-  }
-}
-
 
 bool Heater::isOn() {
   if (digitalRead(relayPin) == LOW)
@@ -127,13 +112,17 @@ bool Heater::isOn() {
     return false;
 }
 
-bool Heater::wantsToTurnOn() {
-  if (temp < (maxFloor - offsetFloor))
-  {
+bool Heater::wantsToBeOn() {
+  if (temp < (maxFloor - offsetFloor)) {
     logger->writeLog("Heater wants to turn on in ", location, 3);
     return true;
-  }
-  else {
+  } else if (temp < maxFloor && heatingUp) {
+    logger->writeLog("Heater wants to turn on in ", location, 3);
+    return true;
+  } else if (temp >= maxFloor) {
+    logger->writeLog("Heater don't want to turn on in ", location, 3);
+    return false;
+  } else {
     logger->writeLog("Heater don't want to turn on in ", location, 3);
     return false;
   }

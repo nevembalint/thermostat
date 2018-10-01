@@ -18,7 +18,6 @@ class Room {
     float offsetAir = 2.0;
     bool heatingUp = true;
     int i = 0;
-    bool onState = false;
   public:
     Room();
     Room(const char* f_location, int f_relayPin, int f_floorSensorPin, Measure* f_airSensor, float f_maxAirTemp, const uint8_t* f_deviceAddress, Log* f_logger);
@@ -37,7 +36,6 @@ class Room {
     void handleHeating();
     void setHeatingUp(bool value);
     void setMaxAirTemp(float f_temp);
-    bool getOnState();
 };
 
 #endif

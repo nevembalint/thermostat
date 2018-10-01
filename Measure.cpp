@@ -9,7 +9,7 @@ Measure::Measure(int f_pin, Log* f_logger, const char* f_location){
 }
 
 void Measure::measureDHT() {
-  //delay(2000);
+  delay(100);
   unsigned long currentMillis = millis();
   if(currentMillis - previousMillis > interval) {
     previousMillis = currentMillis; 

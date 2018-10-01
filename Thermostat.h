@@ -25,7 +25,7 @@ class Thermostat {
 
     float maxAirTemp = 25.0f;
     long previousMillis = 0;
-    long interval = 2000;  
+    long interval = 3000;  
     
   public:
     Thermostat(Log* f_logger);
