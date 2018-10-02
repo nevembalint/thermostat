@@ -16,7 +16,7 @@ class Room {
     float humidity;
     float maxAirTemp;
     float offsetAir = 2.0;
-    bool heatingUp = true;
+    bool heatingUp = false;
     int i = 0;
   public:
     Room();
