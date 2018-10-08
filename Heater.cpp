@@ -47,8 +47,12 @@ float Heater::readTemp()
       {
         logger->writeLog("Failed to read floor sensor in ", location, 2);
         errors++;
-        if (errors > 5)
-          tempC = 100.0;
+        if (errors > 5) {
+          temp = 100.0;
+          if (errors > 10) {
+            //ESP.restart();
+          }
+        }
         return 100.0;
       }
     else
@@ -106,6 +110,7 @@ void Heater::turnOff()
 }
 
 bool Heater::isOn() {
+  delay(200);
   if (digitalRead(relayPin) == LOW)
     return true;
   else

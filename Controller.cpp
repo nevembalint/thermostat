@@ -152,9 +152,11 @@ void Controller::reconnect()
 
 void Controller::mqttLoop()
 {
+  if(WiFi.status() == WL_CONNECTED){
     if (!mqtt.connected())
     {
         reconnect();
     }
     mqtt.loop();
+  }
 }

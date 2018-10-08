@@ -22,8 +22,8 @@ class Room {
     Room();
     Room(const char* f_location, int f_relayPin, int f_floorSensorPin, Measure* f_airSensor, float f_maxAirTemp, const uint8_t* f_deviceAddress, Log* f_logger);
     void readTemp();
-    void heatOn();
-    void heatOff();
+    bool heatOn();
+    bool heatOff();
     Heater* getHeater();
     int getRelayPin();
     float getAirTemp();

@@ -90,10 +90,13 @@ void Log::reconnect() {
 }
 
 void Log::mqttLoop() {
-  if (!mqtt.connected()) {
-    reconnect();
+  if(WiFi.status() == WL_CONNECTED){
+    if (!mqtt.connected())
+    {
+        reconnect();
+    }
+    mqtt.loop();
   }
-  mqtt.loop();
 }
 
 void Log::setlogLevel(int f_level) {

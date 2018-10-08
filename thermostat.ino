@@ -12,6 +12,7 @@ WiFiManager wm;
 Log* logger = new Log(3);
 Thermostat* thermostat = new Thermostat(logger);
 Controller* controller = new Controller(thermostat, logger);
+int wifiCounter = 0;
 
 void callbackController(char* topic, byte* payload, unsigned int length) {
   controller->callback(topic, payload, length);
@@ -23,6 +24,8 @@ void setup() {
   EEPROM.begin(32);
     //reset settings - wipe credentials for testing
     //wm.resetSettings();
+    wm.setWiFiAutoReconnect(true);
+    wm.setConnectTimeout(60);
     wm.setConfigPortalBlocking(false);
     if(wm.autoConnect("Thermostat")){
         logger->writeLog("connected...yeey :)", "", 1);
@@ -40,5 +43,8 @@ void loop() {
     if (WiFi.status() == WL_CONNECTED) {
       logger->mqttLoop();
       controller->mqttLoop();
+    } else {
+      wifiCounter++;
+      Serial.println(wifiCounter);
     }
 }

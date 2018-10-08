@@ -24,7 +24,7 @@ void Room::readTemp() {
   logger->writeLog("Humidity is ", buffer, 3);
 }
 
-void Room::heatOn() {
+bool Room::heatOn() {
   //logger->writeLog("Attempting to turn on heat in ", location, 3);
   if (!isOn())
   {
@@ -34,10 +34,12 @@ void Room::heatOn() {
     heatingUp = true;
   } else {
     //logger->writeLog("Heat is already on in ", location, 3);
+    
   }
+  return true;
 }
 
-void Room::heatOff() {
+bool Room::heatOff() {
   //logger->writeLog("Attempting to turn off heat in ", location, 3);
   if (isOn())
   {
@@ -48,6 +50,7 @@ void Room::heatOff() {
   } else {
     //logger->writeLog("Heat is already off in ", location, 3);
   }
+  return false;
 }
 
 Heater* Room::getHeater() {

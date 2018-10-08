@@ -30,7 +30,7 @@ bool Thermostat::managePriority(Room* room) {
       i++;
     }
     delay(100);
-    room->heatOn();
+    heatingUp = room->heatOn();
     } else {
       //logger->writeLog("Heat can't turn on in ", room->getLocation(), 3);
     }
@@ -52,17 +52,17 @@ void Thermostat::handleHeating() {
   if (power) {
     for (int i = 0; i < sizeof(roomPriority)/sizeof(roomPriority[0]); i++) {
       Room* room = roomPriority[i];
-      if (room->getAirTemp() <= room->getMaxAirTemp() || room->isHeatingUp())
+      if (room->getAirTemp() <= room->getMaxAirTemp() || heatingUp)
       {
         if (energySaver) {
         managePriority(room);
         } else {
-          room->heatOn();
+          heatingUp = room->heatOn();
         }
       }
       if (room->getAirTemp() >= room->getMaxAirTemp() + offsetAir)
       {
-        room->heatOff();
+        heatingUp = room->heatOff();
       }
     }
   } else {
