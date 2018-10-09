@@ -57,6 +57,7 @@ float Heater::readTemp()
       }
     else
     {
+      errors = 0;
       temp = tempC;
       char buffer[32] = {};
       snprintf(buffer, 32, "%f in %s", temp, location);
