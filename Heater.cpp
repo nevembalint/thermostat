@@ -51,6 +51,7 @@ float Heater::readTemp()
           temp = 100.0;
           if (errors > 10) {
             //ESP.restart();
+            logger->writeLog("10 errors during reading ", "floor sensor", 2);
           }
         }
         return 100.0;
