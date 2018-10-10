@@ -14,7 +14,7 @@ class Heater
     const uint8_t* deviceAddress;
     float offsetFloor = 4.0f;
     float temp;
-    float maxFloor = 35.0f;
+    float maxFloor = 30.0f;
     int i=0;
     Log* logger;
     long previousMillis = 0;
