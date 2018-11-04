@@ -3,9 +3,9 @@
 Thermostat::Thermostat(Log* f_logger)
 {
   logger = f_logger;
-  hallSensor = new Measure(13, logger, "hall");
-  livingroom = new Room("livingroom", 5, 12, hallSensor, 24.0f, livingroomFloorAddress, logger);
-  hall = new Room("hall", 4, 12, hallSensor, 24.0f, hallFloorAddress, logger);
+  hallSensor = new Measure(2, logger, "hall");
+  livingroom = new Room("livingroom", 5, 3, hallSensor, 24.0f, livingroomFloorAddress, logger);
+  hall = new Room("hall", 4, 3, hallSensor, 24.0f, hallFloorAddress, logger);
   roomPriority[0] = hall;
   roomPriority[1] = livingroom;
 
@@ -57,10 +57,10 @@ void Thermostat::handleHeating() {
         if (energySaver) {
         managePriority(room);
         } else {
-          heatingUp = room->heatOn();
+          //heatingUp = room->heatOn();
         }
-      }
-      if (room->getAirTemp() >= room->getMaxAirTemp() + offsetAir)
+      } 
+      if (room->getAirTemp() > room->getMaxAirTemp() + offsetAir)
       {
         heatingUp = room->heatOff();
       }

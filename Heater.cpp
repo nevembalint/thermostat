@@ -50,8 +50,8 @@ float Heater::readTemp()
         if (errors > 5) {
           temp = 100.0;
           if (errors > 10) {
-            //ESP.restart();
             logger->writeLog("10 errors during reading ", "floor sensor", 2);
+            ESP.restart();
           }
         }
         return 100.0;
@@ -73,42 +73,42 @@ void Heater::relayOn()
 {
   if(!isOn())
   {
-    digitalWrite(relayPin, LOW);
     logger->writeLog("Relay turned on in ", location, 3);
     logger->updateState("relay", location, 1);
   } else {
     logger->writeLog("Relay is already on in ", location, 3);
   }
+    digitalWrite(relayPin, LOW);
 }
 
 void Heater::relayOff()
 {
   if(isOn())
   {
-    digitalWrite(relayPin, HIGH);
     logger->writeLog("Relay turned off in ", location, 3);
     logger->updateState("relay", location, 0);
   } else {
     logger->writeLog("Relay is already off in ", location, 3);
   }
+    digitalWrite(relayPin, HIGH);
 }
 
 void Heater::turnOn()
 {
   if(!isOn()) {
-    relayOn();
     heatingUp = true;
   logger->writeLog("Heater turned on in ", location, 1);
   }
+    relayOn();
 }
 
 void Heater::turnOff()
 { 
   if(isOn()) {
-    relayOff();
     heatingUp = false;
   logger->writeLog("Heater turned off in ", location, 1);
   }
+    relayOff();
 }
 
 bool Heater::isOn() {

@@ -25,7 +25,7 @@ void setup() {
     //reset settings - wipe credentials for testing
     //wm.resetSettings();
     wm.setWiFiAutoReconnect(true);
-    wm.setConnectTimeout(60);
+    wm.setConnectTimeout(90);
     wm.setConfigPortalBlocking(false);
     if(wm.autoConnect("Thermostat")){
         logger->writeLog("connected...yeey :)", "", 1);
